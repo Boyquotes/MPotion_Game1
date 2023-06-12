@@ -1,0 +1,1051 @@
+[gd_scene load_steps=33 format=3 uid="uid://ch08825mypa2k"]
+
+[ext_resource type="Texture2D" uid="uid://buq6qa5w2twof" path="res://assets/image/background/mpotion.png" id="1_lo2vy"]
+[ext_resource type="Texture2D" uid="uid://bf1b7bdb5okxf" path="res://assets/image/buttons/exit.png" id="3_3gpt0"]
+[ext_resource type="Texture2D" uid="uid://6ko485tfu50" path="res://assets/image/background/clouds.png" id="3_nrjsg"]
+[ext_resource type="Texture2D" uid="uid://by5bhv6h4slht" path="res://assets/image/background/mc_book.png" id="5_a47b5"]
+[ext_resource type="FontFile" uid="uid://cs3ilu325m11v" path="res://assets/others/fonts/minecraft_font.ttf" id="5_l7ahp"]
+[ext_resource type="Texture2D" uid="uid://b2m7inl585xj5" path="res://assets/image/buttons/pos_tab.png" id="6_4u0i0"]
+[ext_resource type="Texture2D" uid="uid://cx7whipgefd57" path="res://assets/image/buttons/neg_tab.png" id="7_x5is0"]
+[ext_resource type="Texture2D" uid="uid://cuvfxfrelqu37" path="res://assets/image/textures/effect_icon/swiftness.png" id="8_2ngi6"]
+[ext_resource type="Texture2D" uid="uid://bxljks41ludc5" path="res://assets/image/textures/effect_icon/strength.png" id="9_sjfea"]
+[ext_resource type="Texture2D" uid="uid://bvn3wlvw6bp41" path="res://assets/image/textures/effect_icon/leaping.png" id="10_lvj3c"]
+[ext_resource type="Texture2D" uid="uid://dcijbvckynn2s" path="res://assets/image/textures/effect_icon/healing.png" id="11_h5lgy"]
+[ext_resource type="Texture2D" uid="uid://bqk6dr06rhqrt" path="res://assets/image/textures/effect_icon/slowness.png" id="12_nsa0l"]
+[ext_resource type="Texture2D" uid="uid://c874vhsmpwaxd" path="res://assets/image/textures/effect_icon/harming.png" id="13_c5dhv"]
+[ext_resource type="Texture2D" uid="uid://down5dj82uqrh" path="res://assets/image/textures/effect_icon/poison.png" id="14_wh00w"]
+[ext_resource type="Texture2D" uid="uid://c5e7sq3giwdlk" path="res://assets/image/textures/effect_icon/turtle_master.png" id="15_het7k"]
+[ext_resource type="Texture2D" uid="uid://dueg0f8gkf34q" path="res://assets/image/textures/effect_icon/weakness.png" id="16_frq4e"]
+[ext_resource type="Texture2D" uid="uid://dwr67ed0uhwds" path="res://assets/image/textures/effect_icon/regeneration.png" id="17_n0fkt"]
+[ext_resource type="Texture2D" uid="uid://c2v70mocexvae" path="res://assets/image/textures/effect_icon/fire_resistance.png" id="18_vrvq5"]
+[ext_resource type="Texture2D" uid="uid://d3klhr8akpihd" path="res://assets/image/textures/effect_icon/water_breathing.png" id="19_2i6xx"]
+[ext_resource type="Texture2D" uid="uid://c0ryesr3wdqfk" path="res://assets/image/textures/effect_icon/night_vision.png" id="20_ljiso"]
+[ext_resource type="Texture2D" uid="uid://dghpayqj0lt7m" path="res://assets/image/textures/potion/swiftness.png" id="21_aljwa"]
+[ext_resource type="Texture2D" uid="uid://gyrbev3xdavi" path="res://assets/image/textures/effect_icon/invisibility.png" id="21_nl0fw"]
+[ext_resource type="Texture2D" uid="uid://bhe0i483om24k" path="res://assets/image/textures/ingredients/glowstone.png" id="22_8gbl6"]
+[ext_resource type="Texture2D" uid="uid://dw3flc46shn6w" path="res://assets/image/textures/ingredients/redstone.png" id="23_12rmy"]
+[ext_resource type="AudioStream" uid="uid://c0wko5r6mtlot" path="res://assets/audio/button_clicking.mp3" id="23_vtdu4"]
+[ext_resource type="AudioStream" uid="uid://d1bq20fwvwcwf" path="res://assets/audio/minecraft_cat.mp3" id="24_5fh13"]
+[ext_resource type="Texture2D" uid="uid://b2cwo865lkpmh" path="res://assets/image/textures/ingredients/fermented.png" id="24_di3nf"]
+[ext_resource type="Texture2D" uid="uid://ceui3rmwcs6dn" path="res://assets/image/textures/potion/slowness.png" id="25_l7pnn"]
+[ext_resource type="Texture2D" uid="uid://bj4eabdc48x3s" path="res://assets/image/textures/ingredients/gunpowder.png" id="26_gdygs"]
+[ext_resource type="Texture2D" uid="uid://c3mwqp5gorxkm" path="res://assets/image/textures/potion/lingering_potion.png" id="27_o1fg7"]
+[ext_resource type="Texture2D" uid="uid://dje06aclnrisb" path="res://assets/image/buttons/github.png" id="30_dckq8"]
+
+[sub_resource type="GDScript" id="GDScript_efslf"]
+script/source = "extends Control
+
+# is the list displayed?
+var displaywhich = 'none'
+
+# links (scene / dir)
+@onready var positive_list = $items/positive
+@onready var negative_list = $items/negative
+@onready var bt_clicking = $audio/audio2d_clicking
+@onready var music = $audio/audio2d_music
+@onready var file_version: = FileAccess.open(\"res://assets/others/version.txt\", FileAccess.READ)	
+
+# links (others)
+var github_link = 'https://github.com/Justinnn04'
+
+func _ready():
+	# display version
+	var text = file_version.get_as_text()
+	$labels/version.text = text
+
+func _process(delta):
+	# display
+	if displaywhich == 'positive':
+		positive_list.visible = true
+		negative_list.visible = false
+	
+	elif displaywhich == 'negative':
+		positive_list.visible = false
+		negative_list.visible = true
+
+	# repeat music
+	if not music.playing:
+		music.play()
+
+func _on_bt_positive_gui_input(event):
+	if event is InputEventMouseButton:
+		if event.is_pressed():
+			# bt sound effect
+			bt_clicking.play()
+			displaywhich = 'positive'
+
+func _on_bt_negative_gui_input(event):
+	if event is InputEventMouseButton:
+		if event.is_pressed():
+			# bt sound effect
+			bt_clicking.play()
+			displaywhich = 'negative'
+
+# exit
+func _on_bt_exit_gui_input(event):
+	if event is InputEventMouseButton:
+		if event.is_pressed():
+			# bt sound effect
+			bt_clicking.play()
+			get_tree().quit()
+
+# open github
+func _on_bt_github_gui_input(event):
+	if event is InputEventMouseButton:
+		if event.is_pressed():
+			# bt sound effect
+			bt_clicking.play()
+			OS.shell_open(github_link)
+"
+
+[node name="Game" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = SubResource("GDScript_efslf")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 2.0
+offset_bottom = 2.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_lo2vy")
+
+[node name="labels" type="Control" parent="."]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="notice" type="Label" parent="labels"]
+layout_mode = 0
+offset_left = 227.0
+offset_top = 556.0
+offset_right = 667.0
+offset_bottom = 582.0
+theme_override_fonts/font = ExtResource("5_l7ahp")
+text = "THIS IS SOLELY FOR ENTERTAINMENT PURPOSES"
+
+[node name="version" type="Label" parent="labels"]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 616.0
+offset_right = 144.0
+offset_bottom = 642.0
+theme_override_fonts/font = ExtResource("5_l7ahp")
+text = "version"
+
+[node name="McBook" type="Sprite2D" parent="."]
+position = Vector2(447, 364)
+texture = ExtResource("5_a47b5")
+
+[node name="Result" type="Control" parent="McBook"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -316.0
+offset_top = -197.0
+offset_right = -316.0
+offset_bottom = -197.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="positive" type="Control" parent="McBook/Result"]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="rlt_swiftness" type="Control" parent="McBook/Result/positive"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="label1" type="Label" parent="McBook/Result/positive/rlt_swiftness"]
+layout_mode = 0
+offset_left = 416.0
+offset_top = 348.0
+offset_right = 488.0
+offset_bottom = 360.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("5_l7ahp")
+theme_override_font_sizes/font_size = 7
+text = "minecraftwiki.com"
+
+[node name="page_left" type="Control" parent="McBook/Result/positive/rlt_swiftness"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="base" type="Label" parent="McBook/Result/positive/rlt_swiftness/page_left"]
+layout_mode = 0
+offset_left = 44.0
+offset_top = 137.0
+offset_right = 138.0
+offset_bottom = 160.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("5_l7ahp")
+text = "Swiftness"
+horizontal_alignment = 1
+
+[node name="effect_lbl1" type="Label" parent="McBook/Result/positive/rlt_swiftness/page_left"]
+layout_mode = 0
+offset_left = 44.0
+offset_top = 163.0
+offset_right = 242.0
+offset_bottom = 182.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("5_l7ahp")
+theme_override_font_sizes/font_size = 12
+text = "Effect: +20% Speed (3 mins)"
+
+[node name="enhancement1" type="Label" parent="McBook/Result/positive/rlt_swiftness/page_left"]
+layout_mode = 0
+offset_left = 44.0
+offset_top = 203.0
+offset_right = 158.0
+offset_bottom = 226.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("5_l7ahp")
+text = "Swiftness II"
+horizontal_alignment = 1
+
+[node name="effect_lbl2" type="Label" parent="McBook/Result/positive/rlt_swiftness/page_left"]
+layout_mode = 0
+offset_left = 44.0
+offset_top = 229.0
+offset_right = 257.0
+offset_bottom = 248.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("5_l7ahp")
+theme_override_font_sizes/font_size = 12
+text = "Effect: +40% Speed (1.5 mins )"
+
+[node name="potion" type="Sprite2D" parent="McBook/Result/positive/rlt_swiftness/page_left"]
+position = Vector2(151.5, 73.5)
+scale = Vector2(0.153226, 0.153226)
+texture = ExtResource("21_aljwa")
+
+[node name="effect3" type="Sprite2D" parent="McBook/Result/positive/rlt_swiftness/page_left"]
+position = Vector2(214.5, 95.5)
+scale = Vector2(0.364605, 0.364605)
+texture = ExtResource("8_2ngi6")
+
+[node name="ingredient1" type="Sprite2D" parent="McBook/Result/positive/rlt_swiftness/page_left"]
+position = Vector2(177, 213)
+scale = Vector2(0.090636, 0.090636)
+texture = ExtResource("22_8gbl6")
+
+[node name="enhancement2" type="Label" parent="McBook/Result/positive/rlt_swiftness/page_left"]
+layout_mode = 0
+offset_left = 44.0
+offset_top = 276.315
+offset_right = 158.0
+offset_bottom = 299.315
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("5_l7ahp")
+text = "Swiftness +"
+horizontal_alignment = 1
+
+[node name="effect_lbl3" type="Label" parent="McBook/Result/positive/rlt_swiftness/page_left"]
+layout_mode = 0
+offset_left = 44.0
+offset_top = 302.315
+offset_right = 257.0
+offset_bottom = 321.315
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("5_l7ahp")
+theme_override_font_sizes/font_size = 12
+text = "Effect: +20% Speed (8 mins )"
+
+[node name="ingredient2" type="Sprite2D" parent="McBook/Result/positive/rlt_swiftness/page_left"]
+position = Vector2(175, 285)
+scale = Vector2(0.220318, 0.220318)
+texture = ExtResource("23_12rmy")
+
+[node name="page_right" type="Control" parent="McBook/Result/positive/rlt_swiftness"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="label" type="Label" parent="McBook/Result/positive/rlt_swiftness/page_right"]
+layout_mode = 0
+offset_left = 340.0
+offset_top = 50.0
+offset_right = 570.0
+offset_bottom = 79.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("5_l7ahp")
+theme_override_font_sizes/font_size = 20
+text = "Additional Info: +++"
+horizontal_alignment = 1
+
+[node name="3" type="Control" parent="McBook/Result/positive/rlt_swiftness/page_right"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="fermented" type="Sprite2D" parent="McBook/Result/positive/rlt_swiftness/page_right/3"]
+position = Vector2(550, 277.126)
+scale = Vector2(0.176569, 0.176569)
+texture = ExtResource("26_gdygs")
+
+[node name="how-to" type="Label" parent="McBook/Result/positive/rlt_swiftness/page_right/3"]
+layout_mode = 0
+offset_left = 335.0
+offset_top = 271.126
+offset_right = 545.0
+offset_bottom = 290.126
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("5_l7ahp")
+theme_override_font_sizes/font_size = 12
+text = "* splash potion of swiftness"
+
+[node name="fermented2" type="Sprite2D" parent="McBook/Result/positive/rlt_swiftness/page_right/3"]
+position = Vector2(549, 298.126)
+scale = Vector2(0.200784, 0.200784)
+texture = ExtResource("27_o1fg7")
+
+[node name="how-to2" type="Label" parent="McBook/Result/positive/rlt_swiftness/page_right/3"]
+layout_mode = 0
+offset_left = 335.0
+offset_top = 294.251
+offset_right = 545.0
+offset_bottom = 313.251
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("5_l7ahp")
+theme_override_font_sizes/font_size = 12
+text = "* tipped arrow of swiftness"
+
+[node name="1" type="Control" parent="McBook/Result/positive/rlt_swiftness/page_right"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="fermented" type="Sprite2D" parent="McBook/Result/positive/rlt_swiftness/page_right/1"]
+position = Vector2(560, 122.439)
+scale = Vector2(0.176569, 0.176569)
+texture = ExtResource("24_di3nf")
+
+[node name="potion_icon" type="Sprite2D" parent="McBook/Result/positive/rlt_swiftness/page_right/1"]
+position = Vector2(449, 99.7536)
+scale = Vector2(0.22192, 0.22192)
+texture = ExtResource("25_l7pnn")
+
+[node name="label" type="Label" parent="McBook/Result/positive/rlt_swiftness/page_right/1"]
+layout_mode = 0
+offset_left = 338.0
+offset_top = 90.7536
+offset_right = 432.0
+offset_bottom = 113.754
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("5_l7ahp")
+text = "Slowness"
+horizontal_alignment = 1
+
+[node name="effect" type="Label" parent="McBook/Result/positive/rlt_swiftness/page_right/1"]
+layout_mode = 0
+offset_left = 338.0
+offset_top = 116.754
+offset_right = 548.0
+offset_bottom = 135.754
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("5_l7ahp")
+theme_override_font_sizes/font_size = 12
+text = "Effect: -15% Speed (1.5 mins)"
+
+[node name="how-to" type="Label" parent="McBook/Result/positive/rlt_swiftness/page_right/1"]
+layout_mode = 0
+offset_left = 337.0
+offset_top = 132.754
+offset_right = 547.0
+offset_bottom = 151.754
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("5_l7ahp")
+theme_override_font_sizes/font_size = 12
+text = "* from Potion of Swiftness"
+
+[node name="2" type="Control" parent="McBook/Result/positive/rlt_swiftness/page_right"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="fermented" type="Sprite2D" parent="McBook/Result/positive/rlt_swiftness/page_right/2"]
+position = Vector2(550, 198.754)
+scale = Vector2(0.176569, 0.176569)
+texture = ExtResource("24_di3nf")
+
+[node name="potion_icon" type="Sprite2D" parent="McBook/Result/positive/rlt_swiftness/page_right/2"]
+position = Vector2(461, 177.754)
+scale = Vector2(0.22192, 0.22192)
+texture = ExtResource("25_l7pnn")
+
+[node name="label" type="Label" parent="McBook/Result/positive/rlt_swiftness/page_right/2"]
+layout_mode = 0
+offset_left = 337.0
+offset_top = 166.645
+offset_right = 443.0
+offset_bottom = 189.645
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("5_l7ahp")
+text = "Slowness +"
+horizontal_alignment = 1
+
+[node name="effect" type="Label" parent="McBook/Result/positive/rlt_swiftness/page_right/2"]
+layout_mode = 0
+offset_left = 337.0
+offset_top = 192.645
+offset_right = 547.0
+offset_bottom = 211.645
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("5_l7ahp")
+theme_override_font_sizes/font_size = 12
+text = "Effect: -15% Speed (4 mins)"
+
+[node name="how-to" type="Label" parent="McBook/Result/positive/rlt_swiftness/page_right/2"]
+layout_mode = 0
+offset_left = 336.0
+offset_top = 208.645
+offset_right = 546.0
+offset_bottom = 227.645
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("5_l7ahp")
+theme_override_font_sizes/font_size = 12
+text = "* from Potion of Swiftness +"
+
+[node name="negative" type="Control" parent="McBook/Result"]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="rlt_slowness" type="Control" parent="McBook/Result/negative"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="label1" type="Label" parent="McBook/Result/negative/rlt_slowness"]
+layout_mode = 0
+offset_left = 416.0
+offset_top = 348.0
+offset_right = 488.0
+offset_bottom = 360.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("5_l7ahp")
+theme_override_font_sizes/font_size = 7
+text = "minecraftwiki.com"
+
+[node name="page_left" type="Control" parent="McBook/Result/negative/rlt_slowness"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="base" type="Label" parent="McBook/Result/negative/rlt_slowness/page_left"]
+layout_mode = 0
+offset_left = 44.0
+offset_top = 137.0
+offset_right = 138.0
+offset_bottom = 160.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("5_l7ahp")
+text = "Slowness"
+horizontal_alignment = 1
+
+[node name="effect_lbl1" type="Label" parent="McBook/Result/negative/rlt_slowness/page_left"]
+layout_mode = 0
+offset_left = 44.0
+offset_top = 163.0
+offset_right = 242.0
+offset_bottom = 182.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("5_l7ahp")
+theme_override_font_sizes/font_size = 12
+text = "Effect: -15% Speed (1.5 mins)"
+
+[node name="enhancement1" type="Label" parent="McBook/Result/negative/rlt_slowness/page_left"]
+layout_mode = 0
+offset_left = 44.0
+offset_top = 203.0
+offset_right = 158.0
+offset_bottom = 226.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("5_l7ahp")
+text = "Slowness IV"
+horizontal_alignment = 1
+
+[node name="effect_lbl2" type="Label" parent="McBook/Result/negative/rlt_slowness/page_left"]
+layout_mode = 0
+offset_left = 44.0
+offset_top = 229.0
+offset_right = 257.0
+offset_bottom = 248.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("5_l7ahp")
+theme_override_font_sizes/font_size = 12
+text = "Effect: -60% Speed (20 secs )"
+
+[node name="potion" type="Sprite2D" parent="McBook/Result/negative/rlt_slowness/page_left"]
+position = Vector2(159, 81)
+scale = Vector2(0.617238, 0.617238)
+texture = ExtResource("25_l7pnn")
+
+[node name="effect3" type="Sprite2D" parent="McBook/Result/negative/rlt_slowness/page_left"]
+position = Vector2(210, 100)
+scale = Vector2(0.240636, 0.240636)
+texture = ExtResource("12_nsa0l")
+
+[node name="ingredient1" type="Sprite2D" parent="McBook/Result/negative/rlt_slowness/page_left"]
+position = Vector2(177, 213)
+scale = Vector2(0.090636, 0.090636)
+texture = ExtResource("22_8gbl6")
+
+[node name="enhancement2" type="Label" parent="McBook/Result/negative/rlt_slowness/page_left"]
+layout_mode = 0
+offset_left = 44.0
+offset_top = 276.315
+offset_right = 158.0
+offset_bottom = 299.315
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("5_l7ahp")
+text = "Slowness +"
+horizontal_alignment = 1
+
+[node name="effect_lbl3" type="Label" parent="McBook/Result/negative/rlt_slowness/page_left"]
+layout_mode = 0
+offset_left = 44.0
+offset_top = 302.315
+offset_right = 257.0
+offset_bottom = 321.315
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("5_l7ahp")
+theme_override_font_sizes/font_size = 12
+text = "Effect: -15% Speed (4 mins )"
+
+[node name="ingredient2" type="Sprite2D" parent="McBook/Result/negative/rlt_slowness/page_left"]
+position = Vector2(175, 285)
+scale = Vector2(0.220318, 0.220318)
+texture = ExtResource("23_12rmy")
+
+[node name="page_right" type="Control" parent="McBook/Result/negative/rlt_slowness"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 315.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="label" type="Label" parent="McBook/Result/negative/rlt_slowness/page_right"]
+layout_mode = 0
+offset_left = 25.0
+offset_top = 50.0
+offset_right = 255.0
+offset_bottom = 79.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("5_l7ahp")
+theme_override_font_sizes/font_size = 20
+text = "Additional Info: +++"
+horizontal_alignment = 1
+
+[node name="3" type="Control" parent="McBook/Result/negative/rlt_slowness/page_right"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="fermented" type="Sprite2D" parent="McBook/Result/negative/rlt_slowness/page_right/3"]
+position = Vector2(240, 100.126)
+scale = Vector2(0.176569, 0.176569)
+texture = ExtResource("26_gdygs")
+
+[node name="how-to" type="Label" parent="McBook/Result/negative/rlt_slowness/page_right/3"]
+layout_mode = 0
+offset_left = 25.0
+offset_top = 94.1255
+offset_right = 235.0
+offset_bottom = 113.125
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("5_l7ahp")
+theme_override_font_sizes/font_size = 12
+text = "* splash potion of slowness"
+
+[node name="fermented2" type="Sprite2D" parent="McBook/Result/negative/rlt_slowness/page_right/3"]
+position = Vector2(239, 121.126)
+scale = Vector2(0.200784, 0.200784)
+texture = ExtResource("27_o1fg7")
+
+[node name="how-to2" type="Label" parent="McBook/Result/negative/rlt_slowness/page_right/3"]
+layout_mode = 0
+offset_left = 25.0
+offset_top = 117.25
+offset_right = 235.0
+offset_bottom = 136.25
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("5_l7ahp")
+theme_override_font_sizes/font_size = 12
+text = "* tipped arrow of slowness"
+
+[node name="bt_exit" type="Control" parent="."]
+anchors_preset = 0
+offset_left = 1055.0
+offset_top = 30.0
+offset_right = 1103.0
+offset_bottom = 78.0
+
+[node name="cloud" type="TextureRect" parent="bt_exit"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -28.0
+offset_top = 24.0
+offset_right = 27.0
+offset_bottom = 26.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("3_nrjsg")
+expand_mode = 1
+
+[node name="TextureRect" type="TextureRect" parent="bt_exit"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("3_3gpt0")
+expand_mode = 2
+
+[node name="buttons_tab" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 756.0
+offset_top = 146.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="bt_positive" type="Control" parent="buttons_tab"]
+anchors_preset = 0
+offset_left = 341.0
+offset_top = 68.0
+offset_right = 396.0
+offset_bottom = 155.0
+
+[node name="TextureRect" type="TextureRect" parent="buttons_tab/bt_positive"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("6_4u0i0")
+expand_mode = 3
+
+[node name="bt_negative" type="Control" parent="buttons_tab"]
+anchors_preset = 0
+offset_left = 336.0
+offset_top = 151.0
+offset_right = 400.0
+offset_bottom = 238.0
+
+[node name="ColorRect" type="ColorRect" parent="buttons_tab/bt_negative"]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 39.0
+offset_right = 49.0
+offset_bottom = 47.0
+
+[node name="TextureRect" type="TextureRect" parent="buttons_tab/bt_negative"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("7_x5is0")
+expand_mode = 3
+
+[node name="items" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 770.0
+offset_top = 144.0
+offset_right = -57.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="negative" type="Control" parent="items"]
+visible = false
+anchors_preset = 0
+offset_left = 165.0
+offset_top = 70.0
+offset_right = 325.0
+offset_bottom = 364.0
+
+[node name="ColorRect" type="ColorRect" parent="items/negative"]
+modulate = Color(1, 1, 1, 0.392157)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="buttons" type="Control" parent="items/negative"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="bt_slowness" type="Control" parent="items/negative/buttons"]
+layout_mode = 1
+anchors_preset = 0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 75.0
+offset_bottom = 75.0
+
+[node name="TextureRect" type="TextureRect" parent="items/negative/buttons/bt_slowness"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("12_nsa0l")
+expand_mode = 2
+
+[node name="bt_harming" type="Control" parent="items/negative/buttons"]
+layout_mode = 1
+anchors_preset = 0
+offset_left = 80.0
+offset_top = 10.0
+offset_right = 145.0
+offset_bottom = 75.0
+
+[node name="TextureRect" type="TextureRect" parent="items/negative/buttons/bt_harming"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("13_c5dhv")
+expand_mode = 2
+
+[node name="bt_poison" type="Control" parent="items/negative/buttons"]
+layout_mode = 1
+anchors_preset = 0
+offset_left = 10.0
+offset_top = 150.0
+offset_right = 75.0
+offset_bottom = 215.0
+
+[node name="TextureRect" type="TextureRect" parent="items/negative/buttons/bt_poison"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("14_wh00w")
+expand_mode = 2
+
+[node name="bt_turtlemaster" type="Control" parent="items/negative/buttons"]
+layout_mode = 1
+anchors_preset = 0
+offset_left = 10.0
+offset_top = 80.0
+offset_right = 75.0
+offset_bottom = 145.0
+
+[node name="TextureRect" type="TextureRect" parent="items/negative/buttons/bt_turtlemaster"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("15_het7k")
+expand_mode = 2
+
+[node name="bt_weakness" type="Control" parent="items/negative/buttons"]
+layout_mode = 1
+anchors_preset = 0
+offset_left = 80.0
+offset_top = 80.0
+offset_right = 145.0
+offset_bottom = 145.0
+
+[node name="TextureRect" type="TextureRect" parent="items/negative/buttons/bt_weakness"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("16_frq4e")
+expand_mode = 2
+
+[node name="positive" type="Control" parent="items"]
+visible = false
+anchors_preset = 0
+offset_left = 165.0
+offset_top = 70.0
+offset_right = 325.0
+offset_bottom = 447.0
+
+[node name="ColorRect" type="ColorRect" parent="items/positive"]
+modulate = Color(1, 1, 1, 0.392157)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="buttons" type="Control" parent="items/positive"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="bt_swiftness" type="Control" parent="items/positive/buttons"]
+layout_mode = 1
+anchors_preset = 0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 75.0
+offset_bottom = 75.0
+
+[node name="TextureRect" type="TextureRect" parent="items/positive/buttons/bt_swiftness"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("8_2ngi6")
+expand_mode = 2
+
+[node name="bt_leaping" type="Control" parent="items/positive/buttons"]
+layout_mode = 1
+anchors_preset = 0
+offset_left = 80.0
+offset_top = 10.0
+offset_right = 145.0
+offset_bottom = 75.0
+
+[node name="TextureRect" type="TextureRect" parent="items/positive/buttons/bt_leaping"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("10_lvj3c")
+expand_mode = 2
+
+[node name="bt_strength" type="Control" parent="items/positive/buttons"]
+layout_mode = 1
+anchors_preset = 0
+offset_left = 10.0
+offset_top = 80.0
+offset_right = 75.0
+offset_bottom = 145.0
+
+[node name="TextureRect" type="TextureRect" parent="items/positive/buttons/bt_strength"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("9_sjfea")
+expand_mode = 2
+
+[node name="bt_healing" type="Control" parent="items/positive/buttons"]
+layout_mode = 1
+anchors_preset = 0
+offset_left = 80.0
+offset_top = 80.0
+offset_right = 145.0
+offset_bottom = 145.0
+
+[node name="TextureRect" type="TextureRect" parent="items/positive/buttons/bt_healing"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("11_h5lgy")
+expand_mode = 2
+
+[node name="bt_regeneration" type="Control" parent="items/positive/buttons"]
+layout_mode = 1
+anchors_preset = 0
+offset_left = 10.0
+offset_top = 150.0
+offset_right = 75.0
+offset_bottom = 215.0
+
+[node name="TextureRect" type="TextureRect" parent="items/positive/buttons/bt_regeneration"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("17_n0fkt")
+expand_mode = 2
+
+[node name="bt_fireresistance" type="Control" parent="items/positive/buttons"]
+layout_mode = 1
+anchors_preset = 0
+offset_left = 80.0
+offset_top = 150.0
+offset_right = 145.0
+offset_bottom = 215.0
+
+[node name="TextureRect" type="TextureRect" parent="items/positive/buttons/bt_fireresistance"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("18_vrvq5")
+expand_mode = 2
+
+[node name="bt_waterbreathing" type="Control" parent="items/positive/buttons"]
+layout_mode = 1
+anchors_preset = 0
+offset_left = 10.0
+offset_top = 220.0
+offset_right = 75.0
+offset_bottom = 285.0
+
+[node name="TextureRect" type="TextureRect" parent="items/positive/buttons/bt_waterbreathing"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("19_2i6xx")
+expand_mode = 2
+
+[node name="bt_nightvision" type="Control" parent="items/positive/buttons"]
+layout_mode = 1
+anchors_preset = 0
+offset_left = 80.0
+offset_top = 220.0
+offset_right = 145.0
+offset_bottom = 285.0
+
+[node name="TextureRect" type="TextureRect" parent="items/positive/buttons/bt_nightvision"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("20_ljiso")
+expand_mode = 2
+
+[node name="bt_invisibility" type="Control" parent="items/positive/buttons"]
+layout_mode = 1
+anchors_preset = 0
+offset_left = 10.0
+offset_top = 290.0
+offset_right = 75.0
+offset_bottom = 355.0
+
+[node name="TextureRect" type="TextureRect" parent="items/positive/buttons/bt_invisibility"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("21_nl0fw")
+expand_mode = 2
+
+[node name="bt_github" type="Control" parent="."]
+anchors_preset = 0
+offset_left = 1052.0
+offset_top = 552.0
+offset_right = 1138.0
+offset_bottom = 638.0
+
+[node name="TextureRect" type="TextureRect" parent="bt_github"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("30_dckq8")
+expand_mode = 2
+
+[node name="audio" type="Node" parent="."]
+
+[node name="audio2d_clicking" type="AudioStreamPlayer2D" parent="audio"]
+stream = ExtResource("23_vtdu4")
+
+[node name="audio2d_music" type="AudioStreamPlayer2D" parent="audio"]
+stream = ExtResource("24_5fh13")
+volume_db = -15.0
+
+[connection signal="gui_input" from="bt_exit" to="." method="_on_bt_exit_gui_input"]
+[connection signal="gui_input" from="items/positive/buttons/bt_swiftness" to="items" method="_on_bt_swiftness_gui_input"]
+[connection signal="gui_input" from="bt_github" to="." method="_on_bt_github_gui_input"]
